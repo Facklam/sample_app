@@ -8,7 +8,7 @@ describe "Static pages" do
     it { should have_selector('h1', text: heading) }
     it { should have_selector('title', text: full_title(page_title)) }
   end
-
+           # before -> besuche vorher die seite root_path und teste folgendes
   describe "Home page" do
     before { visit root_path }
     let(:heading) { 'Sample App' }
