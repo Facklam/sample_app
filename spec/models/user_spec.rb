@@ -1,10 +1,21 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  email      :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'spec_helper'
 
 describe User do
 
   before do
     @user = User.new(name: "Example User", email: "user@example.com",
-                     password: "foobar", password_confirmation: "foobar")
+                    password: "foobar", password_confirmation:"foobar")
   end
 
   subject { @user }
@@ -14,6 +25,7 @@ describe User do
   it { should respond_to(:password_digest) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
 
   it { should be_valid }
@@ -29,7 +41,7 @@ describe User do
   end
 
   describe "when name is too long" do
-    before { @user.email = "a" * 51 }
+    before { @user.name = "a"*51 }
     it { should_not be_valid }
   end
 
@@ -61,18 +73,18 @@ describe User do
       user_with_same_email.save
     end
     it { should_not be_valid }
-
-    describe "email address with mixed case" do
-      let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
-
-      it "should be saved as all lower-case" do
-        @user.email = mixed_case_email
-        @user.save
-        @user.reload.email.should == mixed_case_email.downcase
-      end
-    end
-
   end
+
+  describe "email address with mixed case" do
+    let(:mixed_case_email) { "Foo@ExAMPle.CoM" }
+
+    it "should be saved as all lower-case" do
+      @user.email = mixed_case_email
+      @user.save
+      @user.reload.email.should == mixed_case_email.downcase
+    end
+  end
+
   describe "when password is not present" do
     before { @user.password = @user.password_confirmation = " " }
     it { should_not be_valid }
@@ -107,4 +119,10 @@ describe User do
       specify { user_for_invalid_password.should be_false }
     end
   end
+
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }
+  end
+
 end
