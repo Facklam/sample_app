@@ -4,3 +4,4 @@ class AddAdminToUsers < ActiveRecord::Migration
   end
 end
 
+ #20121129115151_add_admin_to_users.rb

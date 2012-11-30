@@ -8,3 +8,5 @@ class CreateUsers < ActiveRecord::Migration
     end
   end
 end
+
+#20121116141020_create_users.rb
